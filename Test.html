@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+<script>
+navigator.geolocation.getCurrentPosition(
+    function(position) {
+    alert('Latitude: ' + position.coords.latitude + ', Longitude: ' + position.coords.longitude + ', Altitude: ' + position.coords.altitude);
+    },
+    function () {
+     alert('Error locating your device');
+    },
+    {enableHighAccuracy: true}
+);
+</script>
+
+<p>Choose Magazine: <select name="Magazines">
+<option value="GHK">Good Housekeeping</option>
+<option value="MH">Mens Health</option>
+<option value="Esq" selected>Esquire</option>
+<option value="Cosmo">Cosmopolitan</option>
+</select>
+
+<p>Capture Image: <input type="file" accept="image/*" id="capture" capture="camera"> 
+
+<p>Capture Audio: <input type="file" accept="audio/*" id="capture" capture="microphone"> 
+
+<p>Capture Video: <input type="file" accept="video/*" id="capture" capture="camcorder"> 
+
+</body>
+</html>
