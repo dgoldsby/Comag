@@ -8,15 +8,12 @@
 <body>
 
 <script>
-navigator.geolocation.getCurrentPosition(
-    function(position) {
-    alert('Latitude: ' + position.coords.latitude + ', Longitude: ' + position.coords.longitude + ', Altitude: ' + position.coords.altitude);
-    },
-    function () {
-     alert('Error locating your device');
-    },
-    {enableHighAccuracy: true}
-);
+navigator.geolocation.getCurrentPosition(GetLocation);
+function GetLocation(location) {
+    alert(location.coords.latitude);
+    alert(location.coords.longitude);
+    alert(location.coords.accuracy);
+}
 </script>
 
 <p>Choose Magazine: <select name="Magazines">
@@ -24,7 +21,7 @@ navigator.geolocation.getCurrentPosition(
 <option value="MH">Mens Health</option>
 <option value="Esq" selected>Esquire</option>
 <option value="Cosmo">Cosmopolitan</option>
-</select>
+</select> <br>or freetext entry <input type="text" id="magname">
 
 <p>Capture Image: <input type="file" accept="image/*" id="capture" capture="camera"> 
 
