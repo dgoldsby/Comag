@@ -21,9 +21,9 @@
 <script>
 navigator.geolocation.getCurrentPosition(GetLocation);
 function GetLocation(location) {
-    var strLat="<p>Latitude:" + location.coords.latitude;
-    var strLong="<p>Longitude:" + location.coords.longitude;
-    var strAcc="<p>Accuracy:" + location.coords.accuracy;
+    var strLat=" "& location.coords.latitude;
+    var strLong=" "& location.coords.longitude;
+    var strAcc=" "& location.coords.accuracy;
 	document.getElementById("pLat").innerHTML=strLat;
 	document.getElementById("pLong").innerHTML=strLong;
 	document.getElementById("pAcc").innerHTML=strAcc;
