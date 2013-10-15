@@ -28,7 +28,6 @@
     function onDeviceReady() {
         pictureSource=navigator.camera.PictureSourceType;
         destinationType=navigator.camera.DestinationType;
-		navigator.geolocation.getCurrentPosition(onSuccess, onError);
     }
 
     // Called when a photo is successfully retrieved
@@ -104,19 +103,26 @@
 
 	// Get position information
 	//
-	function onSuccess(position) {
-        var url = "http://google.com/maps/bylatlng?lat=" + position.coords.latitude & "&lng=" + position.coords.latitude;
-		document.getElementById("locURL").innerHTML=url
-
+	
+	function geoLocationSuccess(position) {
+		var url = "http://google.com/maps/bylatlng?lat=" + position.coords.latitude & "&lng=" + position.coords.latitude
+		alert(url);
+		document.getElementById("locURL").text=url;
+		}
+	
+	function getPosition() {
+       
+		navigator.geolocation.getCurrentPosition(geoLocationSuccess, geoLocationError); 
+		
     }
 
 	// Show error code for positioning if there is one
 	//
-	function onError() {
-        alert('onError!');
-    }
-
-	// Now get date information
+	function geoLocationError(error) {
+    		alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+		}
+		
+	// Get date information
 	function GetDate() {
 		var currentdate = new Date(); 
 		var datetime = "Date of input: " + currentdate.getDate() + "/"
@@ -125,7 +131,7 @@
                 + currentdate.getHours() + ":"  
                 + currentdate.getMinutes() + ":" 
                 + currentdate.getSeconds();
-				document.getElementById("date").value=datetime;
+				document.getElementById("date").innerHTML=datetime;
 }
 </script>
 
@@ -140,8 +146,10 @@
 <form class="container" id="fromData" action="http://fifteen48.mipropia.com/Mail.php" method="post" enctype="multipart/form-data">
 	<div><h3>Your personal details</h3></div>
     <input type="hidden" id="date" name="date">
-    <span class="locURL"></span>
-	Enter email here: <input type="text" id="email" name="email">
+   
+    <input type="button" id="btnLoc" name="btnLoc" onclick="getPosition()" value="click to set current location">
+    <br><span class="locURL"></span>
+    Enter email here: <input type="text" id="email" name="email" autocomplete="on">
     <div><h3>Choose Magazine</h3></div>
     <div>
     <select name="Magazines">
@@ -156,7 +164,7 @@
 
 	<div><h3>Capture Image of display</h3> </div>
 	<div>
-    	<input type="button" id="file" name="file"  value="Take Photo" style="padding:10px;" onclick="capturePhoto();" title="Take photo">
+    	<input type="button" id="file" name="file" onclick="capturePhoto();" value="Take photo">
 	</div>
 	<div><h3> Stock information</h3></div>
 	<div>Is the magazine available to purchase?<br>
