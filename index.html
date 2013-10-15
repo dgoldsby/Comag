@@ -6,13 +6,11 @@
 	<title>MagSpy</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 	<meta name="description" content="MagSpy" />
-	<meta name="keywords" content="accordion, css3, sibling selector, radio buttons, input, pseudo class" />
 	<meta name="author" content="fifteen48" />
-	<link rel="shortcut icon" href="../favicon.ico"> 
 	<link rel="stylesheet" type="text/css" href="style.css" />
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	<script type="text/javascript" src="modernizr.custom.29473.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
 </head>
 
@@ -50,10 +48,11 @@ function GetDate() {
 <span id="pDate"></span>	
 
 <form class="container" id="fromData" action="Mail.php" method="post" enctype="multipart/form-data">
-	<input type="hidden" id="date" value=pDate name="date">
+	<div><h3>Your personal details</h3></div>
+    <input type="hidden" id="date" value=pDate name="date">
 	Enter email here: <input type="text" id="email" name="email">
-    <div class="header"><h3>Choose Magazine</h3></div>
-    <div class="styled-select">
+    <div><h3>Choose Magazine</h3></div>
+    <div>
     <select name="Magazines">
 		<option value="GHK">Good Housekeeping</option>
 		<option value="MH">Mens Health</option>
@@ -64,12 +63,12 @@ function GetDate() {
 	<input type="text" id="magname" name="magname">
 	</div>
 
-	<div class="header"><h3>Capture Image of display</h3> </div>
-	<div class="content2">
+	<div><h3>Capture Image of display</h3> </div>
+	<div>
     	<input type="file" accept="image/*" id="file" name="file" capture="camera" style="padding:10px;"> 
 	</div>
-	<div class="header"><h3> Stock information</h3></div>
-	<div class="content3">Is the magazine available to purchase?<br>
+	<div><h3> Stock information</h3></div>
+	<div>Is the magazine available to purchase?<br>
 		<input type="radio" name="rdoAvail" value="Yes" checked onclick="ShowHide('rdoAvailYes')">Yes	
 		<input type="radio" name="rdoAvail" value="no" onclick="ShowHide('rdoAvailNo')">No
 	</div>
