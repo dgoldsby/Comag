@@ -12,7 +12,7 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
-    <script src="js/phonegap.js"></script>
+    <script src="phonegap.js"></script>
 
 	<script type="text/javascript" charset="utf-8">
 
@@ -51,7 +51,7 @@
     }
 
     // Called when a photo is successfully retrieved
-    // Puts the image in the largeImage element
+    //
     function onPhotoURISuccess(imageURI) {
       // Uncomment to view the image file URI 
       // console.log(imageURI);
@@ -71,16 +71,15 @@
     }
 
     // A button will call this function
-    // Used to capture and store a picture
+    //
     function capturePhoto() {
       // Take picture using device camera and retrieve image as base64-encoded string
-	  console.log("Photo being taken")
       navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
         destinationType: destinationType.DATA_URL });
     }
 
     // A button will call this function
-    // Used to capture and then edit a picture
+    //
     function capturePhotoEdit() {
       // Take picture using device camera, allow edit, and retrieve image as base64-encoded string  
       navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
@@ -107,8 +106,8 @@
 	
 	function geoLocationSuccess(position) {
 		var url = "http://google.com/maps/bylatlng?lat=" + position.coords.latitude & "&lng=" + position.coords.latitude
-		console.log(url);
-		document.getElementById("locURL").href=url;
+		alert(url);
+		document.getElementById("locURL").text=url;
 		}
 	
 	function getPosition() {
@@ -134,15 +133,6 @@
                 + currentdate.getSeconds();
 				document.getElementById("date").innerHTML=datetime;
 				}
-
-	// Used to show and hide divs based on response within the How easy to find section
-	function showHide(divName) {
-		document.getElementById("divEasy").style.display='none';
-		document.getElementById("divDiff").style.display='none';
-		document.getElementById("divNA").style.display='none';
-		document.getElementById(divName).style.display='block';
-		}
-
 	</script>
 
 </head>
@@ -163,8 +153,8 @@
  
   		<div data-role="collapsible">
     		<h3>Where you are</h3>
-           <p><input type="button" id="btnLocation" name="btnLocation" onClick="getPosition()" value="Get my location">
-    		<p><a id="URLoc"></a></p>
+           <p><input type="button" id="btnLocation" name="btnLocation" onClick="" value="Get my location">
+    		<p class="hiddenLoc"><a class="URLoc"></a></p>
            <p>...or enter other details <input type="text" id="retailerDets" name="retailerDets" value="e.g. Tesco Clapham"></p>
   		</div>
  
@@ -178,49 +168,34 @@
               </select>
               </p>
            <p>...or enter details here <input type="text" id="txtRetailer" name="txtRetailer"></p>
-           <input type="button" id="btnCapture" onclick="capturePhoto()" value="Take Photo">
-           <img id="largeImage" style="display:none" src="">
            <p>How easy was the magazine to find?
-           <input type="radio" name="rdoEasyToFind" id="rdoEasyToFind_1" value="1" onclick="showHide('divEasy')" />
+           <input type="radio" name="rdoEasyToFind" id="rdoEasyToFind_1" value="1" />
            <label for="rdoEasyToFind_1">Easy to find</label>
-           <input type="radio" name="rdoEasyToFind" id="rdoEasyToFind_2" value="2" class="rdoDiff"  onclick="showHide('divDiff')" />
+           <input type="radio" name="rdoEasyToFind" id="rdoEasyToFind_2" value="2" class="rdoDiff" />
            <label for="rdoEasyToFind_2">Difficult to find</label>
-           <input type="radio" name="rdoEasyToFind" id="rdoEasyToFind_3" value="3" class="rdoNA"  onclick="showHide('divNA')" />
+           <input type="radio" name="rdoEasyToFind" id="rdoEasyToFind_3" value="3" class="rdoNA" />
            <label for="rdoEasyToFind_3">Not available</label>
-           <div id="divEasy" name="divEasy" style="display:none">
-           	<p></p>
-           </div>
-           <div id="divDiff" name="divDiff" style="display:none">
+           <div id="divDifficult" name="divDifficult" class="divDiff" hidden="true">
            	<p>Please add any comments about why it was difficult to find</p>
-            	<textarea id="txtDiff" nanm="txtDiff"></textarea>
+            	<textarea id="txtDifficult" name="txtDifficult" />
            </div>
-           <div id="divNA" name="divNA" style="display:none">
+           <div id="divNA" name="divNA" class="divNA" hidden="true">
            	<p>Can you see a gap where the mags should be?<p>
-            	<input type="radio" name="rdoMagsGap" id="rdoMagsGap_Y" value="Y" />
-           	<label for="rdoMagsGap_Y">Yes</label>
-           	<input type="radio" name="rdoMagsGap" id="rdoMagsGap_N" value="N" />
-           	<label for="rdoMagsGap_N">No</label>
             	<p>Did you ask an assistant if they had any stock?</p>
-				<input type="radio" name="rdoAsk" id="rdoAsk_Y" value="Yes" />
-           	<label for="rdoAsk_Y">Yes</label>
-           	<input type="radio" name="rdoAsk" id="rdoAsk_N" value="No" />
-           	<label for="rdoAsk_N">No</label>
-            	<input type="radio" name="rdoAsk" id="rdoAsk_NA" value="NA" />
-           	<label for="rdoAsk_NA">No-one was available</label>
            </div>
   		</div>
 
   		<div data-role="collapsible">
     		<h3>What competitors are doing</h3>
     		<p>Which magazine do you think had the best display?</p>
-           <textarea id="txtDisplay" nanm="txtDisplay"></textarea>
+           <textarea id="txtDisplay" nane="txtDisplay"></textarea>
      		<p>Is there anything that a competitor is doing which could be an opportunity?</p>
-           <textarea id="txtOpportunity" name="txtDisplay"></textarea>         
+           <textarea id="txtOpportunity" nane="txtDisplay"> </textarea>         
   		</div>
 
 	</div>
 
-    <INPUT type="button" value="Save as draft" onclick="saveDraft"><INPUT type="submit" value="Submit" default>
+    <INPUT type="submit" value="Submit">
 </form>
 
 
@@ -229,8 +204,10 @@
 
 <script language="javascript">
 
-
-
+//Show or hide Divs based on choices
+	$('form#fromData').click(function(e) {
+    	var className = e.target.className.replace('rdo', 'div');    
+	    $('.' + className).show().siblings().hide();
+	});
 </script>
-
 </html>
