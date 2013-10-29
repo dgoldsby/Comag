@@ -108,13 +108,17 @@
 	function geoLocationSuccess(position) {
 		var url = "http://google.com/maps/bylatlng?lat=" + position.coords.latitude & "&lng=" + position.coords.latitude
 		console.log(url);
+		alert("location found");
 		document.getElementById("locURL").href=url;
 		}
 	
 	function getPosition() {
-       
-		navigator.geolocation.getCurrentPosition(geoLocationSuccess, geoLocationError); 
-		
+		if ( window.device ) {
+			navigator.geolocation.getCurrentPosition(geoLocationSuccess, geoLocationError); 
+		}
+		else {
+			alert("Device not ready")
+		{
     }
 
 	// Show error code for positioning if there is one
