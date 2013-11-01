@@ -9,7 +9,7 @@
     <name>MagSpy</name>
 
     <description>
-        Magazine Spotter app for Hearst employees.
+        Magazine Spotter app for Comag employees.
     </description>
 
     <author href="http://fifteen48.com" email="darren@fifteen48.com">
@@ -26,6 +26,12 @@
 	<feature name="http://api.phonegap.com/1.0/geolocation" />
 	<feature name="http://api.phonegap.com/1.0/network"/>
 	<feature name="http://api.phonegap.com/1.0/notification"/>
+    
+    <gap:plugin name="org.apache.cordova.camera" />
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.network-information" />
+    <gap:plugin name="org.apache.cordova.device" />
+    <gap:plugin name="org.apache.cordova.dialogs" />
 
     <!--
         If you do not want any permissions to be added to your app, add the
