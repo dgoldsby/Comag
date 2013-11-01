@@ -18,15 +18,56 @@
     var pictureSource;   // picture source
     var destinationType; // sets the format of returned value 
 
-    // Wait for Cordova to connect with the device
+    // Wait for PhoneGap to connect with the device
     //
     document.addEventListener("deviceready",onDeviceReady,false);
 
-    // Cordova is ready to be used!
+    // PhoneGap is ready to be used!
     //
     function onDeviceReady() {
         pictureSource=navigator.camera.PictureSourceType;
         destinationType=navigator.camera.DestinationType;
+    }
+
+
+    function getPosition() {
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    }
+
+    // onSuccess Geolocation
+    //
+    function onSuccess(position) {
+		var URL = 'http://maps.google.com/maps?ll=' + position.coords.latitude + ',' + position.coords.longitude
+		document.getElementById("geolocation").href=URL;
+		document.getElementById("geolocation").innerHTML="View location on a map";
+		reverseGeoLookup(position.coords.longitude, position.coords.latitude)
+	}
+
+	function reverseGeoLookup(lon, lat) {
+  		var req = new XMLHttpRequest()
+  		req.open("GET", "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true", true)
+  		req.onreadystatechange = function() {
+      		if(req.readyState == 4) {
+          		var result = JSON.parse(req.response).results
+          		for(var i = 0, length = result.length; i < length; i++) {
+              		for(var j = 0; j < result[i].address_components.length; j++) {
+                  	var component = result[i].address_components[j]
+                  	if(~component.types.indexOf("postal_code")) {
+                    		var out = document.getElementById('PostCode')
+                    		out.innerHTML = component.long_name
+                  	}
+              		}
+          		}
+      		}
+  		}
+  		req.send()
+	}
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
     }
 
     // Called when a photo is successfully retrieved
@@ -50,7 +91,7 @@
     }
 
     // Called when a photo is successfully retrieved
-    // Puts the image in the largeImage element
+    //
     function onPhotoURISuccess(imageURI) {
       // Uncomment to view the image file URI 
       // console.log(imageURI);
@@ -70,20 +111,17 @@
     }
 
     // A button will call this function
-    // Used to capture and store a picture
+    //
     function capturePhoto() {
       // Take picture using device camera and retrieve image as base64-encoded string
-	  alert("Photo being taken")
-      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
-        destinationType: destinationType.DATA_URL });
+      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
     }
 
     // A button will call this function
-    // Used to capture and then edit a picture
+    //
     function capturePhotoEdit() {
       // Take picture using device camera, allow edit, and retrieve image as base64-encoded string  
-      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
-        destinationType: destinationType.DATA_URL });
+      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true }); 
     }
 
     // A button will call this function
@@ -101,52 +139,7 @@
       alert('Failed because: ' + message);
     }
 
-	// Get position information
-	//
-	
-	function geoLocationSuccess(position) {
-		var url = "http://google.com/maps/bylatlng?lat=" + position.coords.latitude & "&lng=" + position.coords.latitude
-		console.log(url);
-		alert("location found");
-		document.getElementById("locURL").href=url;
-		}
-	
-	function getPosition() {
-		if ( window.device ) {
-			navigator.geolocation.getCurrentPosition(geoLocationSuccess, geoLocationError); 
-		}
-		else {
-			alert("Device not ready")
-		{
-    }
-
-	// Show error code for positioning if there is one
-	//
-	function geoLocationError(error) {
-    		alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-		}
-		
-	// Get date information
-	function GetDate() {
-		var currentdate = new Date(); 
-		var datetime = "Date of input: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-				document.getElementById("date").innerHTML=datetime;
-				}
-
-	// Used to show and hide divs based on response within the How easy to find section
-	function showHide(divName) {
-		document.getElementById("divEasy").style.display='none';
-		document.getElementById("divDiff").style.display='none';
-		document.getElementById("divNA").style.display='none';
-		document.getElementById(divName).style.display='block';
-		}
-
-	</script>
+    </script>
 
 </head>
 
@@ -167,7 +160,8 @@
   		<div data-role="collapsible">
     		<h3>Where you are</h3>
            <p><input type="button" id="btnLocation" name="btnLocation" onClick="getPosition()" value="Get my location">
-    		<p><a id="URLoc"></a></p>
+    		<p><a id="geolocation" href=""></a></p>
+           <p id="PostCode"></p>
            <p>...or enter other details <input type="text" id="retailerDets" name="retailerDets" value="e.g. Tesco Clapham"></p>
   		</div>
  
@@ -182,7 +176,7 @@
               </p>
            <p>...or enter details here <input type="text" id="txtRetailer" name="txtRetailer"></p>
            <input type="button" id="btnCapture" onclick="capturePhoto()" value="Take Photo">
-           <img id="largeImage" style="display:none" src="">
+           <img id="smallImage" style="display:none" src="">
            <p>How easy was the magazine to find?
            <input type="radio" name="rdoEasyToFind" id="rdoEasyToFind_1" value="1" onclick="showHide('divEasy')" />
            <label for="rdoEasyToFind_1">Easy to find</label>
@@ -227,13 +221,29 @@
 </form>
 
 
+	<script>
+	// Get date information
+	function GetDate() {
+		var currentdate = new Date(); 
+		var datetime = "Date of input: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+		document.getElementById("date").innerHTML=datetime;
+	}
+
+	// Used to show and hide divs based on response within the How easy to find section
+	function showHide(divName) {
+		document.getElementById("divEasy").style.display='none';
+		document.getElementById("divDiff").style.display='none';
+		document.getElementById("divNA").style.display='none';
+		document.getElementById(divName).style.display='block';
+	}
+	
+	</script>
+
 </body>
-
-
-<script language="javascript">
-
-
-
-</script>
 
 </html>
