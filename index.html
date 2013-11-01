@@ -54,7 +54,7 @@
                   	var component = result[i].address_components[j];
                   	if(~component.types.indexOf("postal_code")) {
                     		var out = document.getElementById('PostCode');
-                    		out.innerHTML += component.long_name + "'";
+                    		out.innerHTML += component.long_name & ",";
                   	}
               		}
           		}
