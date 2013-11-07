@@ -7,11 +7,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 	<meta name="description" content="MagSpy" />
 	<meta name="author" content="fifteen48" />
-	<link rel="stylesheet" type="text/css" href="/css/style.css" />
-	<link rel="stylesheet" href="/css/jquery.mobile-1.3.2.min.css">
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/jquery.mobile-1.3.2.min.js"></script>
-	<script src="/js/phonegap.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/style.css" />
+	<link rel="stylesheet" href="./css/jquery.mobile-1.3.2.min.css">
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/jquery.mobile-1.3.2.min.js"></script>
+	<script src="./js/phonegap.js"></script>
 
 	<script type="text/javascript" charset="utf-8">
 
@@ -39,23 +39,36 @@
     function onSuccess(position) {
 		var URL = 'http://maps.google.com/maps?ll=' + position.coords.latitude + ',' + position.coords.longitude
 		document.getElementById("geolocation").href=URL;
+		// console.log(URL);
 		document.getElementById("geolocation").innerHTML="View location on a map";
 		reverseGeoLookup(position.coords.longitude, position.coords.latitude)
 	}
 
 	function reverseGeoLookup(lon, lat) {
-  		var req = new XMLHttpRequest()
-  		req.open("GET", "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true", true)
+  		var req = new XMLHttpRequest();
+  		var getHTTP = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true";
+  		console.log(getHTTP);
+  		req.open("GET", getHTTP, true);
   		req.onreadystatechange = function() {
       		if(req.readyState == 4) {
           		var result = JSON.parse(req.response).results;
           		for(var i = 0, length = result.length; i < length; i++) {
               		for(var j = 0; j < result[i].address_components.length; j++) {
                   	var component = result[i].address_components[j];
+                  	var postcodes = new Array();
+                  	var aryno = 0
                   	if(~component.types.indexOf("postal_code")) {
-                    		var out = document.getElementById('PostCode');
-                    		out.innerHTML += component.long_name + ",";
-                  	}
+                    		var out = component.long_name;
+							// slap the postcodes into an array if they are a good length
+                    		console.log(out);
+                    		// if(out.length > 4) {
+                    			console.log("found one");
+                    			postcodes[aryno] = out;
+                    			aryno = aryno + 1;
+                    		// }
+                    		// just display 1 for now to show you've found one - later in here we'll be doing the lookup into the CoMag DB
+                    		document.getElementById("PostCode").innerHTML = postcodes[0];
+                  		}
               		}
           		}
       		}
@@ -217,7 +230,7 @@
 
 	</div>
 
-    <INPUT type="button" value="Save as draft" onclick="saveDraft"><INPUT type="submit" value="Submit" default>
+    <INPUT type="button" value="Save as draft" onclick="saveDraft(document.getElementById('PostCode').innerHTML)"><INPUT type="submit" value="Submit" default>
 </form>
 
 
@@ -241,6 +254,12 @@
 		document.getElementById("divNA").style.display='none';
 		document.getElementById(divName).style.display='block';
 	}
+	
+	function saveDraft(postCode) {
+		var msg="You've successfully saved the draft for store in " + postCode + ".";
+		alert(msg);
+		document.execute.reset();
+		}
 	
 	</script>
 

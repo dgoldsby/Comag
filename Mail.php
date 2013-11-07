@@ -32,6 +32,6 @@ else
   echo "Stored in: " . $_FILES["file"]["tmp_name"];
   }
  ?> 
-
+ <button type="button" onclick="window.location.href='index.html'"">Go back to form</button>
 </body>
 </html>
